@@ -1,0 +1,8 @@
+incognito
+the brain with david eagleman
+the 100 hundred page Machine Learning Book
+grokking deep Learning
+Bayesian Methods for Hackers (probabilistic programming)
+Doing Data Science
+Reinforcement Learning: an Introduction
+The book of why
