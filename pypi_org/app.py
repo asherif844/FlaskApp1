@@ -1,16 +1,24 @@
 # this is awesomer
 import sys
-
+import os
 import flask
 
-sys.path.append('pypi_org/views')
 
+sys.path.append('pypi_org/views')
+sys.path.append('pypi_org/data')
+
+from data import db_session as db_session
 
 app = flask.Flask(__name__)
 
 def main():
     register_blueprints()
+    setup_db()
     app.run(debug=True)
+
+def setup_db():
+    db_file = os.path.join(os.path.dirname(__file__),'db','pypi.sqlite')
+    db_session.global_init(db_file)
 
 def register_blueprints():
     from views import home_views

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    body {
+        font-size: 14px;
+    }
+
+    head {font-size: 12px;}
+</style>
+
+<head>
+
+</head>
+
+<body>
+<div class="container1">
+    <p>data location 1</p>
+    <script>
+
+        var tempData =  {{data | safe}};
+        console.log(tempData);
+    </script>
+</div> 
+
+<!-- <div class="container1">
+        <p>data location 1</p>
+        <script>
+    
+            var tempData =  {{table.to_html(index=False,classes="table table-striped")|safe}};
+            console.log(tempData);
+        </script>
+    </div> -->
+
+</body>
+
+</html>

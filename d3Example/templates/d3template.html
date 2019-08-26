@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>D3 Exercise with JSON File</title>
+        <div id="wrapper"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.0.1/d3.js"></script>
+        <script>
+            
+
+                            const dataset = {{data|safe}};
+                    //        console.log(dataset);
+                    //        console.table(dataset[0]);
+                    const dateParser = d3.timeParse("%Y-%m-%d"); 
+                    const xAccessor = d => dateParser(d.date);
+
+                    const yAccessor = d => d.temperatureMax;
+
+                    //console.log(xAccessor(dataset[0]));
+                    //console.log(yAccessor(dataset[0]));
+
+                    let dimensions = {
+                        width: window.innerWidth * 0.9, height: 400,
+                        margin: {
+                            top: 15,
+                            right: 15,
+                            bottom: 40,
+                            left: 60,},
+                            }
+
+                        dimensions.boundedWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
+                        dimensions.boundedHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
+
+                    const wrapper = d3.select('#wrapper')
+                        .append('svg')
+                        .attr("width", dimensions.width) 
+                        .attr("height", dimensions.height);
+                    
+
+                    const bounds = wrapper.append("g") 
+                        .style("transform", `translate(${
+                        dimensions.margin.left
+                            }px, ${ 
+                        dimensions.margin.top
+                            }px)`);
+
+                    const yScale = d3.scaleLinear()
+                            .domain(d3.extent(dataset, yAccessor))
+                            .range([dimensions.boundedHeight, 0]);
+
+                    const freezingTemperaturePlacement = yScale(32); 
+                    const freezingTemperatures = bounds.append("rect")
+                        .attr("x", 0)
+                        .attr("width", dimensions.boundedWidth)
+                        .attr("y", freezingTemperaturePlacement)
+                        .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
+                        .attr("fill", "#e0f3f3");
+                    
+                    const xScale = d3.scaleTime() 
+                        .domain(d3.extent(dataset, xAccessor)) 
+                        .range([0, dimensions.boundedWidth])
+                    
+                    const lineGenerator = d3.line()
+                        .x(d => xScale(xAccessor(d))) 
+                        .y(d => yScale(yAccessor(d)))
+                    
+                    const line = bounds.append("path")
+                        .attr("d", lineGenerator(dataset))
+                        .attr("fill", "none") 
+                        .attr("stroke", "#af9358") 
+                        .attr("stroke-width", 2)
+    
+                    const yAxisGenerator = d3.axisLeft() 
+                        .scale(yScale)
+                    
+                    const yAxis = bounds.append("g")
+                        .call(yAxisGenerator)
+                    const xAxisGenerator = d3.axisBottom() 
+                        .scale(xScale)
+                    const xAxis = bounds.append("g") 
+                        .call(xAxisGenerator)
+                        .style("transform", `translateY(${ 
+                            dimensions.boundedHeight
+                        }px)`);
+
+
+
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>
